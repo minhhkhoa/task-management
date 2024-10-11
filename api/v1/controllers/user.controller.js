@@ -163,6 +163,7 @@ module.exports.otpPassword = async (req, res) => {
     email: email
   })
 
+  //- muc dich la cho login vao nhung van redirect sang trang reset pass
   const token = user.token
   res.cookie("token", token)
 
@@ -170,5 +171,37 @@ module.exports.otpPassword = async (req, res) => {
     code: 200,
     message: "Xác thực thành công",
     token: token
+  })
+}
+
+//[post] /api/v1/password/reset
+module.exports.resetPassword = async (req, res) => {
+  //B4: doi pass
+  //- lay lai data gui tu client
+  const {token, password} = req.body
+
+  //- lay ra user can doi pass
+  const user = await User.findOne({
+    token: token
+  })
+
+  if(md5(password) === user.password){
+    res.json({
+      code: 400,
+      message: "Vui long nhập mật khẩu mới khác mật khẩu cũ"
+    })
+    return
+  }
+
+  //- update new pass
+  await User.updateOne({
+    token: token
+  },{
+    password: md5(password)
+  })
+
+  res.json({
+    code: 200,
+    message: "Đổi mật khẩu thành công"
   })
 }
