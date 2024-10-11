@@ -87,7 +87,7 @@ module.exports.login = async (req, res) => {
   })
 }
 
-//[post] /api/v1/password/forgot
+//[post] /api/v1/users/password/forgot
 module.exports.forgotPassword = async (req, res) => {
   //B1: Nhap email can doi
   //-lay ra email gui len can dat lai mk
@@ -133,7 +133,7 @@ module.exports.forgotPassword = async (req, res) => {
   })
 }
 
-//[post] /api/v1/password/otp
+//[post] /api/v1/users/password/otp
 module.exports.otpPassword = async (req, res) => {
   //B3: ng dung nhap ma otp
 
@@ -174,7 +174,7 @@ module.exports.otpPassword = async (req, res) => {
   })
 }
 
-//[post] /api/v1/password/reset
+//[post] /api/v1/users/password/reset
 module.exports.resetPassword = async (req, res) => {
   //B4: doi pass
   //- lay lai data gui tu client
@@ -203,5 +203,25 @@ module.exports.resetPassword = async (req, res) => {
   res.json({
     code: 200,
     message: "Đổi mật khẩu thành công"
+  })
+}
+
+//[get] /api/v1/users/detail
+module.exports.detail = async (req, res) => {
+  //-muon lay dc thong tin chi tiet cua 1 ng ta dung token de tim user do
+
+  //-trong req co 1 bien ten la cookies va ta da dat 1 key cho no la token khi login success
+  const token = req.cookies.token
+
+  //- tim user do
+  const user = await User.findOne({
+    token: token,
+    deleted: false
+  }).select("-password -token")
+
+  res.json({
+    code: 200,
+    message: "Thành công",
+    info: user
   })
 }
