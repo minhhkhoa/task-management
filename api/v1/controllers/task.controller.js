@@ -170,3 +170,28 @@ module.exports.edit = async (req, res) => {
     })
   }
 }
+
+// [delete] /api/v1/tasks/delete/:id
+module.exports.delete = async (req, res) => {
+  try {
+    //-lay ra id
+    const id = req.params.id
+
+    await Task.updateOne({
+      _id: id
+    },{ //- xoa mem
+      deleted: true,
+      deletedAt: new Date()
+    }) 
+
+    res.json({
+      code: 200,
+      message: "Xóa thành công"
+    })
+  } catch (error) {
+    res.json({
+      code: 400,
+      message: "Lỗi"
+    })
+  }
+}
