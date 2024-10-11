@@ -7,6 +7,4 @@ module.exports = (app) => {
 
   app.use(version + '/tasks', taskRouters)
 
-
-
 }
