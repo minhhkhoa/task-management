@@ -3,6 +3,9 @@ const express = require('express')
 require("dotenv").config()
 //- end dotenv
 
+//bodyParser giup doc req.body
+const bodyParser = require("body-parser")
+
 //- nhung route
 const routesApiVer1 = require("./api/v1/routes/index.route")
 
@@ -13,6 +16,9 @@ const port = process.env.PORT
 const database = require("./config/database")
 database.connect()
 //- end database
+
+// parse application/json
+app.use(bodyParser.json())
 
 //-goi route Ver1
 routesApiVer1(app)

@@ -9,7 +9,7 @@ module.exports.index = async (req, res) => {
     deleted: false
   }
 
-  if (req.query.status){//- neu co status
+  if (req.query.status) {//- neu co status
     find.status = req.query.status
   }
 
@@ -35,18 +35,18 @@ module.exports.index = async (req, res) => {
   //end phan trang
 
   //-sort
-  const sort ={}
-  if (req.query.sortKey && req.query.sortValue){
+  const sort = {}
+  if (req.query.sortKey && req.query.sortValue) {
     sort[req.query.sortKey] = req.query.sortValue
   }
   //-end sort
-  
+
   const tasks = await Task.find(find)
     .sort(sort)
     .limit(objPagination.limitItems)
     .skip(objPagination.skip)
 
-    
+
   res.json(tasks)
 }
 
@@ -63,4 +63,33 @@ module.exports.detail = async (req, res) => {
   } catch (error) {
     res.json("Không tìm thấy")
   }
+}
+
+// [patch] /api/v1/tasks/change-status/:id
+module.exports.changeStatus = async (req, res) => {
+  try {
+    //-lay ra id can update
+    const id = req.params.id
+
+    //- thứ muốn cập nhật(nội dung cập nhật cho status mà front-end y/c)
+    const status = req.body.status
+
+    //-update
+    await Task.updateOne({
+      _id: id,
+    }, {
+      status: status
+    })
+
+    res.json({
+      code: 200, // cap nhat thanh cong
+      message: "Cập nhật trạng thái thành công"
+    })
+  } catch (error) {
+    res.json({
+      code: 400, // cap nhat thanh cong
+      message: "Không tồn tại"
+    })
+  }
+  
 }
