@@ -3,6 +3,10 @@ const express = require('express')
 require("dotenv").config()
 //- end dotenv
 
+//-cookie parser giup backend co the ghi token vao cookie
+const cookieParser = require('cookie-parser')
+//end cookie parser
+
 //-cors: fix cai nếu front-end bị chặn API ko lay dc data
 const cors = require("cors")
 //-end cors
@@ -22,6 +26,8 @@ app.use(cors())
 const database = require("./config/database")
 database.connect()
 //- end database
+
+app.use(cookieParser());
 
 // parse application/json
 app.use(bodyParser.json())
