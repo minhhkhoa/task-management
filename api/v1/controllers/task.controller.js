@@ -148,3 +148,25 @@ module.exports.create = async (req, res) => {
     })
   }
 }
+
+// [patch] /api/v1/tasks/edit/:id
+module.exports.edit = async (req, res) => {
+  try {
+    //-lay ra id
+    const id = req.params.id
+
+    await Task.updateOne({
+      _id: id
+    }, req.body) //nhan dc nd can update tu front-end
+
+    res.json({
+      code: 200,
+      message: "Cập nhật thành công"
+    })
+  } catch (error) {
+    res.json({
+      code: 400,
+      message: "Lỗi"
+    })
+  }
+}
