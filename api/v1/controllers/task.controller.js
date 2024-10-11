@@ -97,7 +97,7 @@ module.exports.changeStatus = async (req, res) => {
 // [patch] /api/v1/tasks/change-status/:id
 module.exports.changeMulti = async (req, res) => {
   try {
-    //-lay ra cac id, key, value can thay doi
+    //-lay ra cac ids[] va key, value can thay doi
     const { ids, key, value } = req.body
 
     switch (key) { //- dang test vs Postman vs key la status
@@ -107,9 +107,24 @@ module.exports.changeMulti = async (req, res) => {
         }, {
           status: value
         })
+
         res.json({
           code: 200,
           message: "Cập nhật trạng thái thành công"
+        })
+        break;
+
+      case "delete":
+        await Task.updateOne({
+          _id: { $in: ids }
+        }, {
+          deleted: true,
+          deletedAt: new Date() //-them key nay vao documen 
+        })
+
+        res.json({
+          code: 200,
+          message: "Xoá thành công"
         })
         break;
 
