@@ -99,7 +99,7 @@ module.exports.forgotPassword = async (req, res) => {
     deleted: false
   })
 
-  if(!user){//-neu ko co
+  if (!user) {//-neu ko co
     res.json({
       code: 200,
       message: "Email không tồn tại"
@@ -139,7 +139,7 @@ module.exports.otpPassword = async (req, res) => {
   //B3: ng dung nhap ma otp
 
   //-lay otp ng dung nhap
-  const {email, otp} = req.body
+  const { email, otp } = req.body
 
   //- vi minh de model nay la sau 3p la tu xoa nen phai lam nhu nay
   //- tuc la trc 3p phai tim xem co result khong, sau 3p thi user can lay lai pass da bi xoa khoi model
@@ -149,7 +149,7 @@ module.exports.otpPassword = async (req, res) => {
   })
 
   //-check
-  if(!result){//- neu ko co
+  if (!result) {//- neu ko co
     res.json({
       code: 400,
       message: "OTP không hợp lệ"
@@ -179,14 +179,14 @@ module.exports.otpPassword = async (req, res) => {
 module.exports.resetPassword = async (req, res) => {
   //B4: doi pass
   //- lay lai data gui tu client
-  const {token, password} = req.body
+  const { token, password } = req.body
 
   //- lay ra user can doi pass
   const user = await User.findOne({
     token: token
   })
 
-  if(md5(password) === user.password){
+  if (md5(password) === user.password) {
     res.json({
       code: 400,
       message: "Vui long nhập mật khẩu mới khác mật khẩu cũ"
@@ -197,7 +197,7 @@ module.exports.resetPassword = async (req, res) => {
   //- update new pass
   await User.updateOne({
     token: token
-  },{
+  }, {
     password: md5(password)
   })
 
@@ -215,5 +215,17 @@ module.exports.detail = async (req, res) => {
     code: 200,
     message: "Thành công",
     info: req.user
+  })
+}
+
+//[post] /api/v1/users/list
+module.exports.list = async (req, res) => {
+  //-lay ra tat ca cac user
+  const users = await User.find({deleted: false}).select("fullName email")
+
+  res.json({
+    code: 200,
+    message: "Thành công",
+    users: users
   })
 }
