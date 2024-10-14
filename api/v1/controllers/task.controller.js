@@ -148,6 +148,8 @@ module.exports.changeMulti = async (req, res) => {
 // [post] /api/v1/tasks/create
 module.exports.create = async (req, res) => {
   try {
+    //- lay ra user de biet dc dua nao create task (co th boi vi da di qua middleware nen ta biet thua dua nao create)
+    req.body.createdBy = req.user.id //- biet dc dua nao tao qua id cua chinh no
     const task = new Task(req.body) //- task se nhan dc data tu front-end gui len
     const data = await task.save() //- khi luu dc thi gan tk do vao bien data
 
