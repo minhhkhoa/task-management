@@ -209,20 +209,11 @@ module.exports.resetPassword = async (req, res) => {
 
 //[get] /api/v1/users/detail
 module.exports.detail = async (req, res) => {
-  //-muon lay dc thong tin chi tiet cua 1 ng ta dung token de tim user do
-
-  //-trong req co 1 bien ten la cookies va ta da dat 1 key cho no la token khi login success
-  const token = req.cookies.token
-
-  //- tim user do
-  const user = await User.findOne({
-    token: token,
-    deleted: false
-  }).select("-password -token")
+  //- middleware da tra ve user dc them vao obj req roi
 
   res.json({
     code: 200,
     message: "Thành công",
-    info: user
+    info: req.user
   })
 }

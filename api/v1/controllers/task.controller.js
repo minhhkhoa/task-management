@@ -58,7 +58,7 @@ module.exports.detail = async (req, res) => {
       _id: id,
       deleted: false
     })
-    // console.log(tasks)
+    console.log(tasks)
     res.json(tasks)
   } catch (error) {
     res.json("Không tìm thấy")
