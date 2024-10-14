@@ -6,7 +6,14 @@ const searchHelper = require("../../../helpers/search")
 module.exports.index = async (req, res) => {
 
   const find = {
-    deleted: false
+    deleted: false,
+    //- theo tao ra boi ai//-ai tham gia cung nua
+    $or: [
+      //-tao boi ai
+      { createdBy: req.user.id },
+      //- tk dang login co nam trong listUser tham gia ko
+      { listUser: req.user.id }
+    ]
   }
 
   if (req.query.status) {//- neu co status
@@ -196,10 +203,10 @@ module.exports.delete = async (req, res) => {
 
     await Task.updateOne({
       _id: id
-    },{ //- xoa mem
+    }, { //- xoa mem
       deleted: true,
       deletedAt: new Date()
-    }) 
+    })
 
     res.json({
       code: 200,
