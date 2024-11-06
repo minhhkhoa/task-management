@@ -122,7 +122,7 @@ module.exports.changeMulti = async (req, res) => {
         break;
 
       case "delete":
-        await Task.updateOne({
+        await Task.updateMany({
           _id: { $in: ids }
         }, {
           deleted: true,
